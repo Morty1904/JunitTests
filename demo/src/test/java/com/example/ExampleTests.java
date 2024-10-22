@@ -1,95 +1,188 @@
-import java.util.Arrays;
-import java.util.List;
+package com.example;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.*;
 
-public class ExampleTest {
+class ExampleTest {
 
+    Example example = new Example();
+
+    // 1. Tests para sumar(int a, int b)
     @Test
-    public void testSumar() {
-        Example example = new Example();
+    void testSumarPositivos() {
         assertEquals(5, example.sumar(2, 3));
-        assertEquals(-1, example.sumar(-2, 1));
-        assertEquals(0, example.sumar(0, 0));
     }
 
     @Test
-    public void testCheckPositivo() {
-        Example example = new Example();
+    void testSumarNegativos() {
+        assertEquals(-5, example.sumar(-2, -3));
+    }
+
+    @Test
+    void testSumarCero() {
+        assertEquals(3, example.sumar(3, 0));
+    }
+
+    // 2. Tests para checkPositivo(int numero)
+    @Test
+    void testCheckPositivoConPositivo() {
         assertTrue(example.checkPositivo(5));
-        assertThrows(IllegalArgumentException.class, () -> example.checkPositivo(-3));
     }
 
     @Test
-    public void testContarLetrasA() {
-        Example example = new Example();
+    void testCheckPositivoConCero() {
+        assertTrue(example.checkPositivo(0));
+    }
+
+    @Test
+    void testCheckPositivoConNegativo() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            example.checkPositivo(-1);
+        });
+        assertEquals("El número no puede ser negativo", exception.getMessage());
+    }
+
+    // 3. Tests para contarLetrasA(String cadena)
+    @Test
+    void testContarLetrasASimple() {
         assertEquals(3, example.contarLetrasA("banana"));
-        assertEquals(0, example.contarLetrasA("xyz"));
+    }
+
+    @Test
+    void testContarLetrasAVacio() {
         assertEquals(0, example.contarLetrasA(""));
     }
 
     @Test
-    public void testContieneElemento() {
-        Example example = new Example();
+    void testContarLetrasASinA() {
+        assertEquals(0, example.contarLetrasA("bcdf"));
+    }
+
+    // 4. Tests para contieneElemento(List<String> lista, String elemento)
+    @Test
+    void testContieneElemento() {
         List<String> lista = Arrays.asList("manzana", "pera", "uva");
         assertTrue(example.contieneElemento(lista, "pera"));
-        assertFalse(example.contieneElemento(lista, "naranja"));
     }
 
     @Test
-    public void testRevertirCadena() {
-        Example example = new Example();
-        assertEquals("olleh", example.revertirCadena("hello"));
+    void testNoContieneElemento() {
+        List<String> lista = Arrays.asList("manzana", "pera", "uva");
+        assertFalse(example.contieneElemento(lista, "plátano"));
+    }
+
+    @Test
+    void testContieneElementoListaVacia() {
+        List<String> lista = Arrays.asList();
+        assertFalse(example.contieneElemento(lista, "manzana"));
+    }
+
+    // 5. Tests para revertirCadena(String cadena)
+    @Test
+    void testRevertirCadenaNormal() {
+        assertEquals("cba", example.revertirCadena("abc"));
+    }
+
+    @Test
+    void testRevertirCadenaVacio() {
         assertEquals("", example.revertirCadena(""));
+    }
+
+    @Test
+    void testRevertirCadenaUnCaracter() {
         assertEquals("a", example.revertirCadena("a"));
     }
 
+    // 6. Tests para factorial(int numero)
     @Test
-    public void testFactorial() {
-        Example example = new Example();
+    void testFactorialPositivo() {
         assertEquals(120, example.factorial(5));
-        assertEquals(1, example.factorial(0));
-        assertThrows(IllegalArgumentException.class, () -> example.factorial(-3));
     }
 
     @Test
-    public void testEsPrimo() {
-        Example example = new Example();
+    void testFactorialCero() {
+        assertEquals(1, example.factorial(0));
+    }
+
+    @Test
+    void testFactorialNumeroNegativo() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            example.factorial(-1);
+        });
+        assertEquals("Factorial no definido para números negativos", exception.getMessage());
+    }
+
+    // 7. Tests para esPrimo(int numero)
+    @Test
+    void testEsPrimo() {
         assertTrue(example.esPrimo(7));
-        assertFalse(example.esPrimo(4));
+    }
+
+    @Test
+    void testNoEsPrimo() {
+        assertFalse(example.esPrimo(9));
+    }
+
+    @Test
+    void testEsPrimoConNumeroPequeno() {
         assertFalse(example.esPrimo(1));
         assertFalse(example.esPrimo(0));
-        assertFalse(example.esPrimo(-7));
+        assertFalse(example.esPrimo(-5));
     }
 
+    // 8. Tests para mensajeConRetraso()
     @Test
-    public void testMensajeConRetraso() throws InterruptedException {
-        Example example = new Example();
+    void testMensajeConRetraso() throws InterruptedException {
         assertEquals("Listo después de retraso", example.mensajeConRetraso());
     }
 
+    // 9. Tests para convertirAString(List<Integer> lista)
     @Test
-    public void testConvertirAString() {
-        Example example = new Example();
+    void testConvertirAString() {
         List<Integer> lista = Arrays.asList(1, 2, 3);
-        List<String> esperado = Arrays.asList("1", "2", "3");
-        assertEquals(esperado, example.convertirAString(lista));
+        List<String> resultado = example.convertirAString(lista);
+        assertEquals(Arrays.asList("1", "2", "3"), resultado);
     }
 
     @Test
-    public void testCalcularMedia() {
-        Example example = new Example();
-        List<Integer> lista = Arrays.asList(1, 2, 3, 4, 5);
-        assertEquals(3.0, example.calcularMedia(lista));
-        assertThrows(IllegalArgumentException.class, () -> example.calcularMedia(null));
-        assertThrows(IllegalArgumentException.class, () -> example.calcularMedia(Arrays.asList()));
+    void testConvertirAStringListaVacia() {
+        List<Integer> lista = Arrays.asList();
+        List<String> resultado = example.convertirAString(lista);
+        assertTrue(resultado.isEmpty());
+    }
+
+    // 10. Tests para calcularMedia(List<Integer> lista)
+    @Test
+    void testCalcularMedia() {
+        List<Integer> lista = Arrays.asList(1, 2, 3);
+        assertEquals(2.0, example.calcularMedia(lista));
     }
 
     @Test
-    public void testConvertirListaAString() {
-        Example example = new Example();
-        List<String> lista = Arrays.asList("uno", "dos", "tres", null);
-        String esperado = "UNO,DOS,TRES,NULL";
-        assertEquals(esperado, example.convertirListaAString(lista));
+    void testCalcularMediaListaVacia() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            example.calcularMedia(Arrays.asList());
+        });
+        assertEquals("La lista no puede ser nula o vacía", exception.getMessage());
+    }
+
+    // 11. Tests para convertirListaAString(List<String> lista)
+    @Test
+    void testConvertirListaAString() {
+        List<String> lista = Arrays.asList("manzana", "pera", "uva");
+        assertEquals("MANZANA,PERA,UVA", example.convertirListaAString(lista));
+    }
+
+    @Test
+    void testConvertirListaAStringConNulo() {
+        List<String> lista = Arrays.asList("manzana", null, "uva");
+        assertEquals("MANZANA,NULL,UVA", example.convertirListaAString(lista));
+    }
+
+    @Test
+    void testConvertirListaAStringVacia() {
+        List<String> lista = Arrays.asList();
+        assertEquals("", example.convertirListaAString(lista));
     }
 }
