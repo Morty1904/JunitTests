@@ -90,4 +90,8 @@ public class Example {
                 .map(s -> s == null ? "NULL" : s.toUpperCase()) // Si es null, lo reemplazamos por "NULL"
                 .collect(Collectors.joining(","));
     }
+
+    public static void main(String[] args) {
+
+    }
 }
